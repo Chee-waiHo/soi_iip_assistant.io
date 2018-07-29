@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style>
+		input[type="number"] {
+			width: 50px;
+		}
+		label {
+			display: inline-block;
+			width: 245px;
+			text-align: left;
+		}​
+	</style>
+</head>
+	
+<body background="yellowPaper.jpg" style="background-color:#33FF4A; font-family: Comic Sans MS">
+
+<form id="leaveEntitlementForm">
+<img src="RP Shield-CMYK-Low-Res.png" alt="RP Shield" style="float:right;width:72px;height:72px;padding-left:5px">
+	<label>Days of Paid Annual Leave Given:</label> <input type="number" id="Annual_Given" min="0" value="0" required /><br>
+	This is decided between the SOI and the Company before internship started. It is not something you negotiate individually with your supervisor!
+</form>
+<hr>
+<b>Leave Taken (Approved by Supervisor and LO) During IIP</b><br><br>
+<form id="leaveTakenForm">
+	<label>Paid Annual Leave:</label> <input type="number" id="Annual" min="0" value="0" required="required"><br>
+	<label>Medical Leave:</label> <input type="number" id="Medical" min="0" value="0" required="required"><br>
+	<label>Compassionate Leave:</label> <input type="number" id="Compassionate" min="0" value="0" required="required"><br>
+	<label>Emergency Leave:</label> <input type="number" id="Emergency" min="0" value="0" required="required"><br>
+	<label>NS Check-up:</label> <input type="number" id="NS" min="0" value="0" required="required"><br>
+	<label>Others:</label> <input type="number" id="Others" min="0" value="0" required="required">
+</form>
+<hr>
+<div style="color:red">How many days of extension do I need to do?  
+<button onclick="calcMakeUp()">Calculate</button></div>
+
+<p id="note1"></p>
+<p id="note2"></p>
+<p id="note3"></p>
+
+<script>
+
+function calcMakeUp() {
+
+	document.getElementById("note1").innerHTML =  "";
+	document.getElementById("note2").innerHTML =  "";
+	document.getElementById("note3").innerHTML =  "";
+	
+    var annual = document.getElementById("Annual").value,
+		medical = document.getElementById("Medical").value,
+		compassionate = document.getElementById("Compassionate").value,
+		emergency = document.getElementById("Emergency").value,
+		ns = document.getElementById("NS").value,
+		others = document.getElementById("Others").value,
+		annualGiven = document.getElementById("Annual_Given").value,
+		
+		output = "", explain1 = "", explain2 = "", base = 3, mkUpThreshhold = 0, totalLeave = 0.0, makeUp = 0, schTrg = 3, schMakeUp = 0;
+	
+	annual =  annual.trim();
+	medical = medical.trim();
+	compassionate = compassionate.trim();
+	emergency = emergency.trim();
+	ns = ns.trim();
+	others = others.trim();
+	annualGiven = annualGiven.trim();
+	
+	if (annual.length === 0 || medical.length === 0 || compassionate.length === 0 ||
+		emergency.length === 0 || others.length === 0 || annualGiven.length === 0 ||
+		ns.length === 0) {
+		output = "Please re-enter values. Do not leave field blank.";
+		document.getElementById("note1").innerHTML =  output;
+		return;
+	}
+
+	annual =  parseFloat(annual.trim());
+	medical = parseFloat(medical.trim());
+	compassionate = parseFloat(compassionate.trim());
+	emergency = parseFloat(emergency.trim());
+	ns = parseFloat(ns.trim());
+	others = parseFloat(others.trim());
+	annualGiven = parseFloat(annualGiven.trim());
+	
+	totalLeave = annual + medical + compassionate + emergency + ns + others;
+	
+	if (annualGiven <= base) {
+		mkUpThreshhold = base;
+	} else {
+		mkUpThreshhold = annualGiven;
+	}
+		
+	if (annual > annualGiven) {
+		output = "Please re-enter values. The number of days of annual leave taken is greater than what company agreed to at the start before the start of the internship";
+	} else {
+		console.log ("total " + totalLeave);
+		console.log ("threshhold " + mkUpThreshhold);
+		makeUp = totalLeave - mkUpThreshhold;
+		
+		if (makeUp <= 0) {
+			output = "You do not need to do any extension.";
+		} else {
+			schMakeUp = makeUp + schTrg;
+			if (annual < annualGiven) {
+				console.log ("Before include AL" + makeUp);
+				makeUp = makeUp - (annualGiven - annual);
+				if (makeUp < 0) {
+					makeUp = 0;
+				}
+				console.log ("After include AL " + makeUp);
+			}
+			output = `If the Company is willing, you will extend your internship by ${makeUp} day(s) at your company.`; 
+				
+			if (annual < annualGiven) {
+				output = output + " You have unused annual leave. This assumes that you CAN make use of unused annual leave to offset your extension. ";
+			}
+			output = output + " If your company is NOT willing to extend your internship, you will come back to RP to perform a make-up of " + schMakeUp + " days.";
+		}
+	} 
+	
+    document.getElementById("note1").innerHTML =  output;
+	
+	if (output != "You do not need to do any extension.") {
+		var unusedAL = annualGiven - annual;
+		explain1 = `Company Extension : Total Leave Taken - Extension Threshold - Unused Annual Leave, ${totalLeave} - ${mkUpThreshhold} - ${unusedAL} = ${makeUp}.`
+	
+		explain2 = `RP Extension: Total Leave Taken - Extension Threshold + RP Training, ${totalLeave} - ${mkUpThreshhold} + ${schTrg} = ${schMakeUp}.`
+	}
+	
+	document.getElementById("note2").innerHTML =  explain1;
+	document.getElementById("note3").innerHTML =  explain2;
+	
+	this.scrollBy(0, 500);
+}
+</script>
+
+</body>
+</html>
