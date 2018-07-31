@@ -122,13 +122,13 @@ function calcMakeUp() {
 	
 	if (output != "You do not need to do any extension.") {
 		if (annualGiven <= base) {
-			explain1 = `Company Extension : Total Leave (All Types) - Extension Threshold of 3 days, ${totalLeave} - 3 = ${makeUp}.`
+			explain1 = `Company Extension : Total Leave Taken (All Types) - Extension Threshold of 3 days, ${totalLeave} - 3 = ${makeUp}.`
 	
-			explain2 = `RP Extension: Total Leave (All Types) - Extension Threshold of 3 days + RP Training, ${totalLeave} - 3 + ${schTrg} = ${schMakeUp}.`
+			explain2 = `RP Extension: Total Leave Taken (All Types) - Extension Threshold of 3 days + RP Training, ${totalLeave} - 3 + ${schTrg} = ${schMakeUp}.`
 		} else {
-			explain1 = `Company Extension : Total Leave (All Types) - Total Paid Annual Leave Given, ${totalLeave} - ${annualGiven} = ${makeUp}.`
+			explain1 = `Company Extension : Total Leave Taken (All Types) - Total Paid Annual Leave Given, ${totalLeave} - ${annualGiven} = ${makeUp}.`
 	
-			explain2 = `RP Extension: Total Leave (All Types) - Total Paid Annual Leave Given + RP Training, ${totalLeave} - ${annualGiven} + ${schTrg} = ${schMakeUp}.`
+			explain2 = `RP Extension: Total Leave Taken (All Types) - Total Paid Annual Leave Given + RP Training, ${totalLeave} - ${annualGiven} + ${schTrg} = ${schMakeUp}.`
 		}
 	}
 	
