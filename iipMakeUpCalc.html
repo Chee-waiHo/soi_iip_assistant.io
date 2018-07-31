@@ -56,7 +56,7 @@ function calcMakeUp() {
 		others = document.getElementById("Others").value,
 		annualGiven = document.getElementById("Annual_Given").value,
 		
-		output = "", explain1 = "", explain2 = "", base = 3, mkUpThreshhold = 0, totalLeave = 0.0, makeUp = 0, schTrg = 3, schMakeUp = 0;
+		output = "", explain1 = "", explain2 = "", base = 3, mkUpThreshhold = 0, nonAnnualLeave = 0.0, makeUp = 0, schTrg = 3, schMakeUp = 0;
 	
 	annual =  annual.trim();
 	medical = medical.trim();
@@ -83,36 +83,35 @@ function calcMakeUp() {
 	annualGiven = parseFloat(annualGiven.trim());
 	
 	totalLeave = annual + medical + compassionate + emergency + ns + others;
+	var unusedAL = annualGiven - annual;
 	
 	if (annualGiven <= base) {
 		mkUpThreshhold = base;
 	} else {
 		mkUpThreshhold = annualGiven;
 	}
-		
+	console.log ("annualGiven " + annualGiven);
+	console.log ("unusedAL " + unusedAL);
 	if (annual > annualGiven) {
 		output = "Please re-enter values. The number of days of annual leave taken is greater than what company agreed to at the start before the start of the internship";
+		document.getElementById("note1").innerHTML =  output;
+		return;
 	} else {
-		console.log ("total " + totalLeave);
-		console.log ("threshhold " + mkUpThreshhold);
-		makeUp = totalLeave - mkUpThreshhold;
-		
-		if (makeUp <= 0) {
+		console.log ("totalLeave " + totalLeave);
+		console.log ("mkUpThreshhold " + mkUpThreshhold);
+		if (annualGiven <= base) {
+			makeUp = totalLeave - base;
+		} else {
+			makeUp = totalLeave - mkUpThreshhold;
+		}
+		if (makeUp < 0) {
 			output = "You do not need to do any extension.";
 		} else {
 			schMakeUp = makeUp + schTrg;
-			if (annual < annualGiven) {
-				console.log ("Before include AL" + makeUp);
-				makeUp = makeUp - (annualGiven - annual);
-				if (makeUp < 0) {
-					makeUp = 0;
-				}
-				console.log ("After include AL " + makeUp);
-			}
 			output = `If the Company is willing, you will extend your internship by ${makeUp} day(s) at your company.`; 
 				
 			if (annual < annualGiven) {
-				output = output + " You have unused annual leave. This assumes that you CAN make use of unused annual leave to offset your extension. ";
+				output = output + " You have " + unusedAL + " day(s) of unused annual leave. This assumes that you CAN make use of unused annual leave to offset your extension. ";
 			}
 			output = output + " If your company is NOT willing to extend your internship, you will come back to RP to perform a make-up of " + schMakeUp + " days.";
 		}
@@ -121,10 +120,15 @@ function calcMakeUp() {
     document.getElementById("note1").innerHTML =  output;
 	
 	if (output != "You do not need to do any extension.") {
-		var unusedAL = annualGiven - annual;
-		explain1 = `Company Extension : Total Leave Taken - Extension Threshold - Unused Annual Leave, ${totalLeave} - ${mkUpThreshhold} - ${unusedAL} = ${makeUp}.`
+		if (annualGiven <= base) {
+			explain1 = `Company Extension : Total Leave (All Types) - Extension Threshold of 3 days, ${totalLeave} - 3 = ${makeUp}.`
 	
-		explain2 = `RP Extension: Total Leave Taken - Extension Threshold + RP Training, ${totalLeave} - ${mkUpThreshhold} + ${schTrg} = ${schMakeUp}.`
+			explain2 = `RP Extension: Total Leave (All Types) - Extension Threshold of 3 days + RP Training, ${totalLeave} - 3 + ${schTrg} = ${schMakeUp}.`
+		} else {
+			explain1 = `Company Extension : Total Leave (All Types) - Total Paid Annual Leave Given, ${totalLeave} - ${annualGiven} = ${makeUp}.`
+	
+			explain2 = `RP Extension: Total Leave (All Types) - Total Paid Annual Leave Given + RP Training, ${totalLeave} - ${annualGiven} + ${schTrg} = ${schMakeUp}.`
+		}
 	}
 	
 	document.getElementById("note2").innerHTML =  explain1;
