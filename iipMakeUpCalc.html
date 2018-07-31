@@ -109,11 +109,12 @@ function calcMakeUp() {
 		} else {
 			schMakeUp = makeUp + schTrg;
 			output = `If the Company is willing, you will extend your internship by ${makeUp} day(s) at your company.`; 
-				
-			if (annual < annualGiven) {
+			if (makeUp === 0 && (medical + compassionate + emergency + ns + others) === 0) {
+				output = "You do not need to do any extension.";
+			} else if (annual < annualGiven) {
 				output = output + " You have " + unusedAL + " day(s) of unused annual leave. This assumes that you CAN make use of unused annual leave to offset your extension. ";
+				output = output + " If your company is NOT willing to extend your internship, you will come back to RP to perform a make-up of " + schMakeUp + " days.";
 			}
-			output = output + " If your company is NOT willing to extend your internship, you will come back to RP to perform a make-up of " + schMakeUp + " days.";
 		}
 	} 
 	
