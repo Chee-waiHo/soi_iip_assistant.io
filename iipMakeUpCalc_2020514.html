@@ -83,9 +83,7 @@ function calcMakeUp() {
 	others = parseFloat(others.trim());
 	annualGiven = parseFloat(annualGiven.trim());
 	
-	// totalLeave = annual + medical + compassionate + emergency + ns + others;
-	// 14-May-2020, exclude national service
-	totalLeave = annual + medical + compassionate + emergency + others;
+	totalLeave = annual + medical + compassionate + emergency + ns + others;
 	var unusedAL = annualGiven - annual;
 	
 	if (annualGiven <= base) {
@@ -111,12 +109,12 @@ function calcMakeUp() {
 			output = "You do not need to do any extension.";
 		} else {
 			schMakeUp = makeUp + schTrg;
-			output = `If the Company is willing, you will extend your internship by ${makeUp} day(s) at your company.`;
-			output = output + " If your company is NOT willing to extend your internship, you will come back to RP to perform a make-up of " + schMakeUp + " days.";
-			if (medical + compassionate + emergency + others === 0) {
+			output = `If the Company is willing, you will extend your internship by ${makeUp} day(s) at your company.`; 
+			if (medical + compassionate + emergency + ns + others === 0) {
 				output = "You do not need to do any extension.";
 			} else if (annual < annualGiven) {
-				output = output + " You have " + unusedAL + " day(s) of unused annual leave. You may want to check with your company if unused annual leave can be used to offset your extension. Annual leave can ONLY be used to offset extension at company.";
+				output = output + " You have " + unusedAL + " day(s) of unused annual leave. This assumes that you CAN make use of unused annual leave to offset your extension. ";
+				output = output + " If your company is NOT willing to extend your internship, you will come back to RP to perform a make-up of " + schMakeUp + " days.";
 			}
 		}
 	} 
@@ -125,13 +123,13 @@ function calcMakeUp() {
 	
 	if (output != "You do not need to do any extension.") {
 		if (annualGiven <= base) {
-			explain1 = `Company Extension : Total Leave Taken (All Types, excl. NS) - Extension Threshold of 3 days, ${totalLeave} - 3 = ${makeUp}.`
+			explain1 = `Company Extension : Total Leave Taken (All Types) - Extension Threshold of 3 days, ${totalLeave} - 3 = ${makeUp}.`
 	
-			explain2 = `RP Extension: Total Leave Taken (All Types, excl. NS) - Extension Threshold of 3 days + RP Training, ${totalLeave} - 3 + ${schTrg} = ${schMakeUp}.`
+			explain2 = `RP Extension: Total Leave Taken (All Types) - Extension Threshold of 3 days + RP Training, ${totalLeave} - 3 + ${schTrg} = ${schMakeUp}.`
 		} else {
-			explain1 = `Company Extension : Total Leave Taken (All Types, excl. NS) - Total Paid Annual Leave Given, ${totalLeave} - ${annualGiven} = ${makeUp}.`
+			explain1 = `Company Extension : Total Leave Taken (All Types) - Total Paid Annual Leave Given, ${totalLeave} - ${annualGiven} = ${makeUp}.`
 	
-			explain2 = `RP Extension: Total Leave Taken (All Types, excl. NS) - Total Paid Annual Leave Given + RP Training, ${totalLeave} - ${annualGiven} + ${schTrg} = ${schMakeUp}.`
+			explain2 = `RP Extension: Total Leave Taken (All Types) - Total Paid Annual Leave Given + RP Training, ${totalLeave} - ${annualGiven} + ${schTrg} = ${schMakeUp}.`
 		}
 	}
 	
