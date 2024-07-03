@@ -99,7 +99,7 @@ function calcMakeUp() {
 	console.log ("annualGiven " + annualGiven);
 	console.log ("unusedAL " + unusedAL);
 	if (annual > annualGiven) {
-		output = "Please re-enter values. The number of days of annual leave taken is greater than what company agreed to at the start before the start of the internship";
+		output = "Please re-enter values. The number of days of annual leave taken is greater than what the company agreed to at the start of the internship";
 		document.getElementById("note1").innerHTML =  output;
 		return;
 	} else {
@@ -120,7 +120,9 @@ function calcMakeUp() {
 			if (totalLeave === 0) {
 				output = "You do not need to do any extension.";
 			} else if (annual < annualGiven) {
-				output = output + " You have " + unusedAL + " day(s) of unused annual leave. You may want to check with your company if unused annual leave can be used to offset your extension. Annual leave can ONLY be used to offset extension at company.";
+				// Removed on 03-Jul-24 as advised by Ryan. If annual leave is taken during make-up, then that means the absolute # of absence
+				// has increased which is counter-intuitive
+				// output = output + " You have " + unusedAL + " day(s) of unused annual leave. You may want to check with your company if unused annual leave can be used to offset your extension. Annual leave can ONLY be used to offset extension at company.";
 			}
 		}
 	} 
