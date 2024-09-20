@@ -22,11 +22,14 @@
 			display: inline-block;
 			width: 309px;
 			text-align: left;
-		}​
+        }
+        #internship-grade, #internship-grade-pt {
+            background-color: grey; /* Set the background color to grey */
+        }
     </style>
 </head>
 <body>
-    <div>GPA Before & After Internship</div>
+    <div>GPA Before & After Internship. Fill in white fields</div>
     <hr>
     <form id="existing-gpa-form">
     
@@ -36,10 +39,13 @@
         <span id="error-message" class="error"></span>
         </br>
     
-        <label for="curr-max-modular-credits">Attempted Modular Credits (100 or 120):</label>
+        <label for="curr-max-modular-credits">Attempted Modular Credits (80 or 100):</label>
         <input type="number" id="curr-max-modular-credits" name="curr-max-modular-credits"
             min="0" max="120" value="100" required="required" inputmode="decimal">
         </br>
+
+        <div>1-year internship, no failed modules, 80.</div>
+        <div>1 semester left, no failed modules, 100.</div>
 
         <label for="internship-score">Internship Score (0 - 100):</label>
         <input type="number" id="internship-score" name="internship-score"
@@ -54,7 +60,7 @@
         <input type="number" id="internship-grade-pt" name="internship-grade-pt" readonly>
         </br>
 
-        <label for="internship-modular-credits">Internship Modular Credits:</label>
+        <label for="internship-modular-credits">Internship Modular Credits (20):</label>
         <input type="number" id="internship-modular-credits" name="internship-modular-credits"
             min="20" max="40" value="20" required="required" inputmode="decimal">
         </br>
@@ -171,9 +177,6 @@
                 document.getElementById("note2").innerHTML = 
                     "Your GPA has improved by <span style='color: green; font-weight: bold;'>" + gpa_diff.toFixed(2) + "</span> points.";
             }
-
-            // document.getElementById("note2").innerHTML = "Your GPA has changed by " +
-            //    gpa_diff.toFixed(2) + " points.";
 
         }
     </script>
