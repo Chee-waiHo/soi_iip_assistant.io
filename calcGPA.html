@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate GPA</title>
+    <style>
+        body {
+            background-color: rgb(58, 128, 0); /* Set the background color to green */
+            font-family: Comic Sans MS;
+        }
+        .error {
+            color: red;
+        }
+        input[type="number"] {
+			width: 50px;
+		}
+        #internship-grade {
+            width: 50px; /* Adjust the width as needed */
+        }
+        label {
+			display: inline-block;
+			width: 309px;
+			text-align: left;
+		}​
+    </style>
+</head>
+<body>
+    <div>GPA Before & After Internship</div>
+    <hr>
+    <form id="existing-gpa-form">
+    
+        <label for="existing-gpa">GPA at Internship Start (0.00 - 4.00):</label>
+        <input type="number" id="existing-gpa" name="existing-gpa" min="0.00" max="4.00" 
+            value="0.00" required="required" inputmode="decimal">
+        <span id="error-message" class="error"></span>
+        </br>
+    
+        <label for="curr-max-modular-credits">Attempted Modular Credits (100 or 120):</label>
+        <input type="number" id="curr-max-modular-credits" name="curr-max-modular-credits"
+            min="0" max="120" value="100" required="required" inputmode="decimal">
+        </br>
+
+        <label for="internship-score">Internship Score (0 - 100):</label>
+        <input type="number" id="internship-score" name="internship-score"
+            min="0" max="100" required="required" inputmode="numeric">
+        </br>
+
+        <label for="internship-grade">Internship Grade:</label>
+        <input type="text" id="internship-grade" name="internship-grade" readonly>
+        </br>
+
+        <label for="internship-grade-pt">Internship Grade Point (Max 4.00):</label>
+        <input type="number" id="internship-grade-pt" name="internship-grade-pt" readonly>
+        </br>
+
+        <label for="internship-modular-credits">Internship Modular Credits:</label>
+        <input type="number" id="internship-modular-credits" name="internship-modular-credits"
+            value="20" readonly>
+        </br>
+
+    </form>
+
+    <button onclick="calcGPA()">Calculate</button></div>
+    <hr>
+    <p id="note1"></p>
+    <p id="note2"></p>
+
+
+    <script>
+
+        document.getElementById('existing-gpa').addEventListener('input', function() {
+            var gpaInput = this.value;
+            var errorMessage = document.getElementById('error-message');
+
+            // Regular expression to check if the input has two decimal places
+            var regex = /^\d+(\.\d{1,2})?$/;
+
+            if (!regex.test(gpaInput)) {
+                errorMessage.textContent = 'Please enter a number with up to two decimal places.';
+            } else {
+                errorMessage.textContent = '';
+            }
+        });
+
+        function calcGPA() {
+
+            document.getElementById("note1").innerHTML = "";
+            document.getElementById("note2").innerHTML = "";
+
+            var existing_gpa = document.getElementById("existing-gpa").value,
+                curr_max_modular_credits = document.getElementById("curr-max-modular-credits").value,
+                internship_score = document.getElementById("internship-score").value,
+                internship_grade = document.getElementById("internship-grade").value,
+                internship_grade_pt = document.getElementById("internship-grade-pt").value,
+                internship_modular_credits = document.getElementById("internship-modular-credits").value,
+    
+            existing_gpa = existing_gpa.trim();
+            curr_max_modular_credits = curr_max_modular_credits.trim();
+            internship_score = internship_score.trim();
+            internship_grade = internship_grade.trim();
+            internship_grade_pt = internship_grade_pt.trim();
+            internship_modular_credits = internship_modular_credits.trim();
+
+            if (existing_gpa.length === 0 || curr_max_modular_credits.length === 0 || 
+                internship_score.length === 0 ) {
+                
+                output = "Please re-enter values. Do not leave field blank.";
+                document.getElementById("note1").innerHTML = output;
+                return;
+            }
+
+            if (existing_gpa < 0 || existing_gpa > 4 || curr_max_modular_credits < 0 || 
+                curr_max_modular_credits > 120 || internship_score < 0 || internship_score > 100) {
+                
+                output = "Please re-enter values. GPA should be between 0.00 and 4.00, " + 
+                    "Modular Credits should be between 0 and 120, and Internship Score " +
+                    "should be between 0 and 100.";
+                document.getElementById("note1").innerHTML = output;
+                return;
+            }
+
+            if (internship_score >= 80) {
+                internship_grade = 'A';
+                internship_grade_pt = 4;
+            } else if (internship_score >= 75) {
+                internship_grade = 'B+';
+                internship_grade_pt = 3.5;
+            } else if (internship_score >= 70) {
+                internship_grade = 'B';
+                internship_grade_pt = 3;
+            } else if (internship_score >= 65) {
+                internship_grade = 'C+';
+                internship_grade_pt = 2.5;
+            } else if (internship_score >= 60) {
+                internship_grade = 'C';
+                internship_grade_pt = 2;
+            } else if (internship_score >= 55) {
+                internship_grade = 'D+';
+                internship_grade_pt = 1.5;
+            } else if (internship_score >= 50) {
+                internship_grade = 'D';
+                internship_grade_pt = 1;
+            } else {
+                internship_grade = 'F';
+                internship_grade_pt = 0;
+            }
+
+            existing_gpa = parseFloat(existing_gpa);
+            curr_max_modular_credits = parseInt(curr_max_modular_credits);
+            internship_score = parseFloat(internship_score);
+            internship_modular_credits = parseInt(internship_modular_credits.trim());
+
+            document.getElementById("internship-grade").value = internship_grade;
+            document.getElementById("internship-grade-pt").value = internship_grade_pt;
+
+            final_gpa = ((existing_gpa * curr_max_modular_credits) + 
+                (internship_grade_pt * internship_modular_credits)) / 
+                (curr_max_modular_credits + internship_modular_credits);
+            
+            gpa_diff = final_gpa - existing_gpa;
+
+            document.getElementById("note1").innerHTML = "Your GPA after internship is " + 
+                final_gpa.toFixed(2) + ". ";
+            if (gpa_diff < 0) {
+                document.getElementById("note2").innerHTML = 
+                    "Your GPA has dropped by <span style='color: red; font-weight: bold;'>" + gpa_diff.toFixed(2) + "</span> points.";
+            } else {
+                document.getElementById("note2").innerHTML = 
+                    "Your GPA has improved by <span style='color: green; font-weight: bold;'>" + gpa_diff.toFixed(2) + "</span> points.";
+            }
+
+            // document.getElementById("note2").innerHTML = "Your GPA has changed by " +
+            //    gpa_diff.toFixed(2) + " points.";
+
+        }
+    </script>
+</body>
+</html>
