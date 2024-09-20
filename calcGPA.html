@@ -56,7 +56,7 @@
 
         <label for="internship-modular-credits">Internship Modular Credits:</label>
         <input type="number" id="internship-modular-credits" name="internship-modular-credits"
-            value="20" readonly>
+            min="20" max="40" value="20" required="required" inputmode="decimal">
         </br>
 
     </form>
@@ -110,12 +110,14 @@
                 return;
             }
 
-            if (existing_gpa < 0 || existing_gpa > 4 || curr_max_modular_credits < 0 || 
-                curr_max_modular_credits > 120 || internship_score < 0 || internship_score > 100) {
+            if (existing_gpa < 0 || existing_gpa > 4 || curr_max_modular_credits < 0 ||
+                curr_max_modular_credits > 120 || internship_score < 0 || internship_score > 100 ||
+                internship_modular_credits < 20 || internship_modular_credits > 40) {
                 
                 output = "Please re-enter values. GPA should be between 0.00 and 4.00, " + 
-                    "Modular Credits should be between 0 and 120, and Internship Score " +
-                    "should be between 0 and 100.";
+                    "Modular Credits should be between 0 and 120, Internship Score " +
+                    "should be between 0 and 100, and Internship Modular Credits " +
+                    "should be between 20 and 40.";
                 document.getElementById("note1").innerHTML = output;
                 return;
             }
@@ -149,7 +151,7 @@
             existing_gpa = parseFloat(existing_gpa);
             curr_max_modular_credits = parseInt(curr_max_modular_credits);
             internship_score = parseFloat(internship_score);
-            internship_modular_credits = parseInt(internship_modular_credits.trim());
+            internship_modular_credits = parseInt(internship_modular_credits);
 
             document.getElementById("internship-grade").value = internship_grade;
             document.getElementById("internship-grade-pt").value = internship_grade_pt;
