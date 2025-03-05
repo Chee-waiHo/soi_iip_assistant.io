@@ -20,17 +20,17 @@
 <form id="leaveEntitlementForm">
 <img src="RP Shield-CMYK-Low-Res.png" alt="RP Shield" style="float:right;width:72px;height:72px;padding-left:5px">
 	<div>20-week Industry Immersion Programme</div><br>
-	<label>Days of Paid Annual Leave Given:</label> <input type="number" id="Annual_Given" min="0" value="0" required /><br>
+	<label>Days of Paid Absence Given:</label> <input type="number" id="Annual_Given" min="0" value="0" required /><br>
 	This is decided between the SOI and the Company before internship started. It is not somedthing you negotiate individually with your supervisor!</br>
-	Do NOT include Paid Medical Leave.
+	Do NOT include Paid Medical Absence.
 </form>
 <hr>
-<b>Leave Taken (Approved by Supervisor and LO) During IIP</b><br><br>
+<b>Absence Approved by Supervisor and LO During IIP (Days)</b><br><br>
 <form id="leaveTakenForm">
-	<label>Paid Annual Leave:</label> <input type="number" id="Annual" min="0" value="0" required="required"><br>
-	<label>Medical Leave:</label> <input type="number" id="Medical" min="0" value="0" required="required"><br>
-	<label>Compassionate Leave:</label> <input type="number" id="Compassionate" min="0" value="0" required="required"><br>
-	<label>Emergency Leave:</label> <input type="number" id="Emergency" min="0" value="0" required="required"><br>
+	<label>Paid Absence:</label> <input type="number" id="Annual" min="0" value="0" required="required"><br>
+	<label>Medical Absence:</label> <input type="number" id="Medical" min="0" value="0" required="required"><br>
+	<label>Compassionate Absence:</label> <input type="number" id="Compassionate" min="0" value="0" required="required"><br>
+	<label>Emergency Absence:</label> <input type="number" id="Emergency" min="0" value="0" required="required"><br>
 	<label>NS Check-up:</label> <input type="number" id="NS" min="0" value="0" required="required"><br>
 	<label>Others:</label> <input type="number" id="Others" min="0" value="0" required="required">
 	<div>For Others, do not include Touchpoint 4 that requires all students to be in RP</div>
@@ -73,7 +73,7 @@ function calcMakeUp() {
 	if (annual.length === 0 || medical.length === 0 || compassionate.length === 0 ||
 		emergency.length === 0 || others.length === 0 || annualGiven.length === 0 ||
 		ns.length === 0) {
-		output = "Please re-enter values. Do not leave field blank.";
+		output = "Please re-enter values. Do not absence field blank.";
 		document.getElementById("note1").innerHTML =  output;
 		return;
 	}
@@ -99,7 +99,7 @@ function calcMakeUp() {
 	console.log ("annualGiven " + annualGiven);
 	console.log ("unusedAL " + unusedAL);
 	if (annual > annualGiven) {
-		output = "Please re-enter values. The number of days of annual leave taken is greater than what the company agreed to at the start of the internship";
+		output = "Please re-enter values. The number of days of absence taken is greater than what the company agreed to at the start of the internship";
 		document.getElementById("note1").innerHTML =  output;
 		return;
 	} else {
@@ -122,7 +122,7 @@ function calcMakeUp() {
 			} else if (annual < annualGiven) {
 				// Removed on 03-Jul-24 as advised by Ryan. If annual leave is taken during make-up, then that means the absolute # of absence
 				// has increased which is counter-intuitive
-				// output = output + " You have " + unusedAL + " day(s) of unused annual leave. You may want to check with your company if unused annual leave can be used to offset your extension. Annual leave can ONLY be used to offset extension at company.";
+				// output = output + " You have " + unusedAL + " day(s) of unused paid absence. You may want to check with your company if unused paid absence can be used to offset your extension. Paid absence can ONLY be used to offset extension at company.";
 			}
 		}
 	} 
@@ -132,8 +132,8 @@ function calcMakeUp() {
 	if (output != "You do not need to do any extension.") {
 		// Not taking annual leave into consideration, 28-May-24
 		// if (annualGiven <= base) {
-			explain1 = `Company Extension : Total Leave Taken (All Types, incl. NS) - Extension Threshold of ${mkUpThreshhold} days, ${totalLeave} - ${mkUpThreshhold} = ${makeUp}.`
-			explain2 = `RP Extension: Total Leave Taken (All Types, incl. NS) - Extension Threshold of ${mkUpThreshhold} days + RP Training, ${totalLeave} - ${mkUpThreshhold} + ${schTrg} = ${schMakeUp}.`
+			explain1 = `Company Extension : Total Absence (All Types, incl. NS) - Extension Threshold of ${mkUpThreshhold} days, ${totalLeave} - ${mkUpThreshhold} = ${makeUp}.`
+			explain2 = `RP Extension: Total Absence (All Types, incl. NS) - Extension Threshold of ${mkUpThreshhold} days + RP Training, ${totalLeave} - ${mkUpThreshhold} + ${schTrg} = ${schMakeUp}.`
 		// } else {
 		//	explain1 = `Company Extension : Total Leave Taken (All Types, excl. NS) - Total Paid Annual Leave Given, ${totalLeave} - ${annualGiven} = ${makeUp}.`
 		//	explain2 = `RP Extension: Total Leave Taken (All Types, incl. NS) - Total Paid Annual Leave Given + RP Training, ${totalLeave} - ${annualGiven} + ${schTrg} = ${schMakeUp}.`
